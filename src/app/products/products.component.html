@@ -7,6 +7,16 @@
       Products list
     </div>
     <div class="card-body">
+      <form [formGroup]="searchFormGroupe" (ngSubmit)="handleSearchProduct()">
+        {{searchFormGroupe.value|json}}
+        <div class="input-group">
+          <label class="input-group-text">Keyword : </label>
+          <input class="form-control" formControlName="keyword" type="text">
+          <button class="btn btn-info">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
       <table class="table">
         <thead>
         <tr>
@@ -14,6 +24,7 @@
           <th>Name</th>
           <th>Price</th>
           <th>Delete</th>
+          <th>Promotion</th>
         </tr>
         </thead>
         <tbody>
@@ -22,14 +33,22 @@
           <td>{{p.name}}</td>
           <td>{{p.price}}</td>
           <td>
-            <button class="btn btn-danger" (click)="handleDeleteProduct(p)">
+            <button class="btn btn-danger" (click)="handleDeleteProduct(p.id)">
               <i class="bi bi-trash">
               </i>
             </button>
           </td>
+          <td [ngClass]="p.promotion===true?'text-success':'text-danger'"
+              (click)="handleSetPromotion(p.id)">
+            <i
+              class="bi bi-heart-fill "></i></td>
         </tr>
         </tbody>
       </table>
+      <ul class="nav nav-pills">
+        <li  (click)="handleGetPageProducts(index,pageSize)"
+            *ngFor="let item of [].constructor(this.totalPages);let index=index"><a class="btn m-1" [ngClass]="index===currentPage?'btn-info':'btn-outline-info'">{{index}}</a></li>
+      </ul>
     </div>
   </div>
 </div>
